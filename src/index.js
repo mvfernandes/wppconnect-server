@@ -48,6 +48,7 @@ export function initServer(serverOptions) {
   app.use(express.json({ limit: '50mb' }));
   app.use(express.urlencoded({ limit: '50mb', extended: true }));
   app.use('/files', express.static(path.resolve(__dirname, '..', 'WhatsAppImages')));
+  app.use(express.static(path.resolve(__dirname, 'dist', 'public')));
   app.use(boolParser());
 
   // Add request options
@@ -67,6 +68,10 @@ export function initServer(serverOptions) {
   });
 
   app.use(routes);
+
+  app.get('*', (_, res) => {
+    res.sendFile(path.resolve(__dirname, 'dist', 'public', 'index.html'));
+  });
 
   createFolders();
 
